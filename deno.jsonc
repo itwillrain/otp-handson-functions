@@ -1,0 +1,21 @@
+{
+  "lint": {
+    "files": {
+      "include": ["supabase"],
+    },
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": []
+    }
+  },
+  "fmt": {
+    "options": {
+      "useTabs": true,
+      "indentWidth": 2,
+      "singleQuote": true,
+      "proseWrap": "preserve",
+      "lineWidth": 100
+    }
+  },
+  "tasks": {}
+}
