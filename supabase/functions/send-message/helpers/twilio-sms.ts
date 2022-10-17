@@ -1,30 +1,40 @@
-import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
-import {Sms} from "../types/sms.interface.ts";
+import {base64} from '../deps.ts';
+import {SMSRequest} from '../types/sms.ts';
 
+/**
+ * Twilio SMS Client Class
+ */
 export class TwilioSms {
   private readonly authorizationHeader: string;
 
+  /**
+   * Create Authorization Header
+   * @param accountSID
+   * @param authToken
+   */
   constructor(private accountSID: string, authToken: string) {
-    this.authorizationHeader =
-      "Basic " +
+    this.authorizationHeader = `Basic ${
       base64.fromUint8Array(
-        new TextEncoder().encode(accountSID + ":" + authToken)
-      );
+        new TextEncoder().encode(`${accountSID}:${authToken}`),
+      )
+    }`;
   }
 
-  async sendSms(payload: Sms): Promise<any> {
+  /**
+   * SMS送信
+   * @param payload SMSRequest
+   */
+  async sendSms(payload: SMSRequest): Promise<any> {
     const res = await fetch(
-      "https://api.twilio.com/2010-04-01/Accounts/" +
-        this.accountSID +
-        "/Messages.json",
+      `https://api.twilio.com/2010-04-01/Accounts/${this.accountSID}/Messages.json`,
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
           Authorization: this.authorizationHeader,
         },
         body: new URLSearchParams(payload).toString(),
-      }
+      },
     );
 
     return await res.json();
